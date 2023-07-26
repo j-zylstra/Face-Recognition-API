@@ -1,73 +1,70 @@
+const fetch = require('cross-fetch');
 
-const USER_ID = 'joe_zylstra';
-const APP_ID = 'Face-Recog';
-const MODEL_ID = 'face-detection';
-const PAT = 'cd5a5fa59c184dcbabd120c2bc287388';
+const returnClarifaiRequestOptions = (imageUrl) => {
+  // Your PAT (Personal Access Token) can be found in the portal under Authentification
+  //const PAT = process.env.API_CLARIFAI;
+  const PAT = 'cd5a5fa59c184dcbabd120c2bc287388';
+  const USER_ID = 'joe_zylstra';
+  const APP_ID = 'Face-Recog';
+  const IMAGE_URL = imageUrl;
 
-const { ClarifaiStub, grpc } = require("clarifai-nodejs-grpc");
+  const raw = JSON.stringify({
+    user_app_id: {
+      user_id: USER_ID,
+      app_id: APP_ID,
+    },
+    inputs: [
+      {
+        data: {
+          image: {
+            url: IMAGE_URL,
+          },
+        },
+      },
+    ],
+  });
 
-const stub = ClarifaiStub.grpc();
 
-const metadata = new grpc.Metadata();
-metadata.set("authorization", "278c17706ad246d784a73fdffb3b57d7" + PAT);
+const requestOptions = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Key ' + PAT,
+  },
+  body: raw,
+};
+return requestOptions;
+};
 
 const handleApiCall = (req, res) => {
-  const imageURL = req.body.input;
-   
-  stub.PostModelOutputs(
-    {
-      user_app_id: {
-        user_id: USER_ID,
-        app_id: APP_ID
-      },
-      model_id: MODEL_ID,
-      
-      inputs: [
-        { data: { image: { url: imageURL, allow_duplicate_url: true} } }
-      ]
-    },
-    metadata,
-    (err, response) => {
-      if (err) {
-        throw new Error(err);
-      }
-
-      if (response.status.code !== 10000) {
-        const errorMessage =
-          "Post model outputs failed, status: " + response.status.description;
-        console.error(errorMessage);
-        res.status(500).json({ error: errorMessage });
-        return;
-      }
-
-      // Since we have one input, one output will exist here.
-      const output = response.outputs[0];
-
-      console.log("Predicted concepts:");
-      for (const concept of output.data.concepts) {
-        console.log(concept.name + ": " + concept.value);
-      }
-      res.json(response);
-      console.log(response);
-    }
-  );
+  fetch(
+    `https://api.clarifai.com/v2/models/face-detection/versions/6dc7e46bc9124c5c8824be4822abe105/outputs`,
+    returnClarifaiRequestOptions(req.body.input)
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => res.status(400).json('unable to work with API'));
 };
 
 
-
-const handleImage = (db) => (req, res) => {
+const handleImage = (req, res, db) => {
    const { id } = req.body;
-   db('users').where('id', '=', id)
+   db('users')
+   .where('id', '=', id)
    .increment('entries', 1)
    .returning('entries')
-   .then(entries => {
+   .then((entries) => {
       res.json(entries[0].entries);
     })
    .catch(err => res.status(400).json('unable to get entries'))
-}
+};
+
+
 
 
 module.exports = {
     handleImage,
     handleApiCall
-}
+};

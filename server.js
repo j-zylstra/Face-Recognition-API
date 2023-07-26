@@ -30,13 +30,13 @@ app.get('/', (req, res) => { res.send('success') })
 app.post('/signin', signin.handleSignin(db, bcrypt))
 app.post('/register', register.handleRegister(db, bcrypt))
 app.get('/profile/:id', profile.handleProfile(db))
-app.put('/image', (req, res) => {image.handleImage(db)})
+app.put('/image', (req, res) => {image.handleImage(req, res, db)})
 app.post('/imageurl', (req, res) => {image.handleApiCall(req, res)})
 
  
 
 
-app.listen(3001, ()=> {
-    console.log('app is running on port 3001');
+app.listen(process.env.PORT || 3001, ()=> {
+    console.log('app is running on port ${process.env.PORT}');
 })
 
