@@ -7,10 +7,10 @@ const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
-const getPort = require('get-port');
-const PORT = process.env.PORT;
-//const Clarifai = require("Clarifai");
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
+const portfinder = require('portfinder');
+
+
+
 const db = knex({
     client: 'pg',
     connection: {
@@ -34,13 +34,16 @@ app.get('/profile/:id', profile.handleProfile(db))
 app.put('/image', (req, res) => {image.handleImage(req, res, db)})
 app.post('/imageurl', (req, res) => {image.handleApiCall(req, res)})
 
- 
-const startServer = async () => {
-  const port = await getPort();
-  app.listen(port, () => {
-    console.log(`App is running on port ${port}`);
-  });
-};
+
+async function startServer() {
+  portfinder.getPortPromise()
+    .then(port => {
+      console.log(`Using port: ${port}`);
+  
+    })
+    .catch(err => {
+      console.error('Error finding an available port:', err);
+    });
+}
 
 startServer();
-
