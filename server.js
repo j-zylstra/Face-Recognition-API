@@ -7,6 +7,8 @@ const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
+const getPort = require('get-port');
+const PORT = process.env.PORT;
 //const Clarifai = require("Clarifai");
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 const db = knex({
@@ -33,9 +35,12 @@ app.put('/image', (req, res) => {image.handleImage(req, res, db)})
 app.post('/imageurl', (req, res) => {image.handleApiCall(req, res)})
 
  
+const startServer = async () => {
+  const port = await getPort();
+  app.listen(port, () => {
+    console.log(`App is running on port ${port}`);
+  });
+};
 
-
-app.listen(process.env.PORT || 3001, ()=> {
-    console.log(`app is running on port ${process.env.PORT}`);
-})
+startServer();
 
