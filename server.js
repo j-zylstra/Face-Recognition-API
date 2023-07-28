@@ -12,19 +12,13 @@ const portfinder = require('portfinder');
 
 
 const db = knex({
-  client: 'pg',
-  connection: {
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-    host: process.env.DATABASE_HOST,
-    port: 5432,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PW,
-    database: process.env.DATABASE_DB,
-  },
-});
+    client: 'pg',
+    connection: {
+      connectionString : process.env.DATABASE_URL,
+      ssl: true,
+    }
+  });
+
   
 const app = express();
 
@@ -52,7 +46,7 @@ app.post('/imageurl', (req, res) => {image.handleApiCall(req, res)})
 //     });
 // }
 
-// startServer();
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`app is running on port ${process.env.PORT}`);
+//startServer();
+app.listen(8001, function() {
+  console.log("Server is running on port" + 8001);
 });
