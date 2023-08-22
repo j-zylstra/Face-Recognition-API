@@ -9,7 +9,7 @@ const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 //const portfinder = require('portfinder');
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3002;
 const db = knex({
   client: 'pg',
   connection: {
