@@ -14,15 +14,8 @@ const db = knex({
   client: 'pg',
   connection: {
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-    host: "ec2-52-0-187-246.compute-1.amazonaws.com",
-    PORT: 5432,
-    user: "tuuhhdkwmgiqdy",
-    password: "6de02f7db7c653d805f9b7ebff4408bae73d1d57eefa31aff4e0747f8b8c4fc3",
-    database: "d1qhioh20f58mo",
-  },
+    ssl: true,
+    }
 });
 
 const app = express();
