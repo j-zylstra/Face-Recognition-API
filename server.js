@@ -28,9 +28,7 @@ const db = knex({
 const app = express();
 
 app.use(bodyParser.json());
-app.use(cors({
-  origin: 'https://git.heroku.com/vast-caverns-20756.git',
-}));
+app.use(cors());
 app.use(function (req, res, next){
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
