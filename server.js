@@ -3,12 +3,13 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require ('knex');
+
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 //const portfinder = require('portfinder');
-
+const port = process.env.PORT || 3001;
 const db = knex({
   client: 'pg',
   connection: {
@@ -16,16 +17,15 @@ const db = knex({
     ssl: {
       rejectUnauthorized: false,
     },
-    host: process.env.DATABASE_HOST,
+    host: "ec2-52-0-187-246.compute-1.amazonaws.com",
     PORT: 5432,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PW,
-    database: process.env.DATABASE_DB,
+    user: "tuuhhdkwmgiqdy",
+    password: "6de02f7db7c653d805f9b7ebff4408bae73d1d57eefa31aff4e0747f8b8c4fc3",
+    database: "d1qhioh20f58mo",
   },
 });
 
 const app = express();
-
 
 app.use(bodyParser.json());
 app.use(cors({origin: "https://vast-caverns-20756-f8729b26975b.herokuapp.com"}));
@@ -51,6 +51,6 @@ app.post('/imageurl', (req, res) => {image.handleApiCall(req, res)})
 // }
 
 //startServer();
-app.listen(process.env.PORT || 3001, () => {
-  console.log(`app is running on port ${process.env.PORT}`);
+app.listen(port, () => {
+  console.log(`app is running on port ${port}`);
 });
