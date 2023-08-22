@@ -29,7 +29,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors({
-  origin: "https://git.heroku.com/facefinder.git",
+  origin: 'https://git.heroku.com/facefinder.git',
 }));
 app.use(function (req, res, next){
   res.header("Access-Control-Allow-Origin", "*");
