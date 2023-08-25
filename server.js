@@ -27,7 +27,7 @@ const db = knex({
 
 const app = express();
 const corsOptions = {
-  origin: 'https://face-finder-1b614a02d3d9.herokuapp.com'
+  origin: '*'
 };
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
