@@ -14,16 +14,14 @@ const db = knex({
   client: 'pg',
   connection: {
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
+    ssl: true
     },
     host: process.env.DATABASE_HOST,
     port: 5432,
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PW,
     database: process.env.DATABASE_DB,
-  },
-});
+  });
 
 const app = express();
 const corsOptions = {
@@ -33,15 +31,9 @@ app.use(bodyParser.json());
 app.use(cors(corsOptions));
 app.use(function (req, res, next){
   res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-      "Access-Control-Allow-Methods",
-      "GET,HEAD,OPTIONS,POST,PUT,DELETE"
-  );
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
   res.header("Access-Control-Allow-Credentials", true);
-  res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   next();
 });
 
@@ -53,18 +45,6 @@ app.put('/image', (req, res) => {image.handleImage(req, res, db)})
 app.post('/imageurl', (req, res) => {image.handleApiCall(req, res)})
 
 
-// async function startServer() {
-//   portfinder.getPortPromise()
-//     .then(port => {
-//       console.log(`Using port: ${port}`);
-  
-//     })
-//     .catch(err => {
-//       console.error('Error finding an available port:', err);
-//     });
-// }
-
-//startServer();
 app.listen(process.env.PORT || 3001, () => {
   console.log(`app is running on port ${process.env.PORT}`);
 });
