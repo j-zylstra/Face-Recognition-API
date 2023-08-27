@@ -27,7 +27,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors({
-  origin: "hhtp://localhost:3000",
+  origin: "https://face-finder-1b614a02d3d9.herokuapp.com",
 }));
 app.use(function (req, res, next){
   res.header("Access-Control-Allow-Origin", "*");
