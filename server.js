@@ -27,7 +27,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors({
-  origin: "https://git.heroku.com/face-finder.git",
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"],
 }));
 app.use(function (req, res, next){
