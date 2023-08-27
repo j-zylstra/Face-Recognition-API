@@ -30,13 +30,13 @@ app.use(cors({
   origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"],
 }));
-app.use(function (req, res, next){
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  next();
-});
+// app.use(function (req, res, next){
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
+//   res.header("Access-Control-Allow-Credentials", true);
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+//   next();
+// });
 
 app.get('/', (req, res) => { res.send('it is working') })
 app.post('/signin', signin.handleSignin(db, bcrypt))
