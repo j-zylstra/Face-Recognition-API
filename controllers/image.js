@@ -3,7 +3,7 @@ const fetch = require('cross-fetch');
 const returnClarifaiRequestOptions = (imageUrl) => {
   // Your PAT (Personal Access Token) can be found in the portal under Authentification
   //const PAT = process.env.API_CLARIFAI;
-  const PAT = 'cd5a5fa59c184dcbabd120c2bc287388';
+  const PAT = process.env.API_CLARIFAI;
   const USER_ID = 'joe_zylstra';
   const APP_ID = 'Face-Recog';
   const IMAGE_URL = imageUrl;
